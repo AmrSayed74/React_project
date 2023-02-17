@@ -76,7 +76,7 @@ const App = () => {
 export default App;
 */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Navbar from './Components/Navbar';
 import Home from './Components/Home';
@@ -89,6 +89,8 @@ import Login from './Components/Login';
 import Register from './Components/Register';
 import Notfound from './Components/Notfound';
 import jwtDecode from 'jwt-decode';
+import MoviesContextProvider from './Components/Context/Store';
+
 
 
 
@@ -157,27 +159,31 @@ const App = () => {
     // Send This Function As a Props To Navbar 
   }
 
+ 
 
 
   return (
     <div>
-      <Navbar logOut={logOut} userData={userData} />
-      <div className="container">
-        <Routes>
-          <Route path='/' element={<ProtectedRoute><Home /></ProtectedRoute>} />
-          <Route path='home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
-          <Route path='movies' element={<ProtectedRoute><Movies /></ProtectedRoute>} />
-          <Route path='moviedetails' element={<ProtectedRoute><MovieDetails /></ProtectedRoute>} >
-            <Route path=':id' element={<ProtectedRoute><MovieDetails /></ProtectedRoute>} />
-          </Route>
-          <Route path='people' element={<ProtectedRoute><People /></ProtectedRoute>} />
-          <Route path='tv' element={<ProtectedRoute><Tv /></ProtectedRoute>} />
-          <Route path='login' element={<Login saveUserData={saveUserData} />} />
-          <Route path='register' element={<Register />} />
-          <Route path='*' element={<ProtectedRoute><Notfound /></ProtectedRoute>} />
-        </Routes>
-      </div>
-      <Footer />
+      <MoviesContextProvider>
+
+        <Navbar logOut={logOut} userData={userData} />
+        <div className="container">
+          <Routes>
+            <Route path='/' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            <Route path='home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            <Route path='movies' element={<ProtectedRoute><Movies /></ProtectedRoute>} />
+            <Route path='moviedetails' element={<ProtectedRoute><MovieDetails /></ProtectedRoute>} >
+              <Route path=':id' element={<ProtectedRoute><MovieDetails /></ProtectedRoute>} />
+            </Route>
+            <Route path='people' element={<ProtectedRoute><People /></ProtectedRoute>} />
+            <Route path='tv' element={<ProtectedRoute><Tv /></ProtectedRoute>} />
+            <Route path='login' element={<Login saveUserData={saveUserData} />} />
+            <Route path='register' element={<Register />} />
+            <Route path='*' element={<ProtectedRoute><Notfound /></ProtectedRoute>} />
+          </Routes>
+        </div>
+        <Footer />
+      </MoviesContextProvider>
     </div>
   );
 }

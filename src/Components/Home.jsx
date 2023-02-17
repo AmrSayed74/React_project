@@ -1,36 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import $ from 'jquery'
+import { moviesContext } from './Context/Store';
 
 const Home = () => {
 
-  // Making Hooks To Put Results On It
-  let [trendingMovies, setTrendingMovies] = useState([]);
-  let [trendingTvShow, setTrendingTvShow] = useState([]);
-  let [trendingPeople, setTrendingPeople] = useState([]);
-
-  // Making a Function To Get Data Results From API, Gives This Function 2 Params To Get From API Dynamic Data
-  async function getTrending(trending, callback) {
-    let { data } = await axios.get(`https://api.themoviedb.org/3/trending/${trending}/day?api_key=c700cd1e7366631f54e647410de860c0`)
-    callback(data.results.slice(0, 16)) // Slice Results To Get 16 Results Only From API
-  }
-
-  // Making useEffect Hook To Call API
-  useEffect(() => {
-    $('.test').hide(4000)
-    // Component didMount => Best Place To Call Your API
-    getTrending('movie', setTrendingMovies) // movie Keyword Will Replace trending Param On API Link, setTrendingMovies Will Replace callback Param
-    getTrending('tv', setTrendingTvShow) // tv Keyword Will Replace trending Param On API Link, setTrendingTvShow Will Replace callback Param
-    getTrending('person', setTrendingPeople) // person Keyword Will Replace trending Param On API Link, setTrendingPeople Will Replace callback Param
-  }, [])
-
-
+  let { trendingMovies, trendingTvShow, trendingPeople } = useContext(moviesContext)
 
   return (
     <>
-      <div className="test w-50 p-1 rounded m-auto bg-dark mb-3 text-center"><h1 className='h3 m-0'> We wish you a pleasant viewing</h1></div>
-
       {trendingMovies ? <div className="row">
         <div className="col-md-4 d-flex align-items-center">
           <div >

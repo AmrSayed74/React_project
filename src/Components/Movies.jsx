@@ -4,13 +4,13 @@ import axios from 'axios'
 import { Link } from 'react-router-dom';
 
 const Movies = () => {
-  let [movies, setMovies] = useState([])
   let numbers = new Array(13).fill(1).map((element, index) => index + 1)
-  console.log(numbers)
+  let [trendingMovies, setTrendingMovies] = useState([]);
+
   async function moviesPage(pageNumber) {
     let { data } = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=c700cd1e7366631f54e647410de860c0&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${pageNumber}`)
     // console.log(res)
-    setMovies(data.results)
+    setTrendingMovies(data.results)
   }
   useEffect(() => {
     moviesPage(1)
@@ -18,7 +18,7 @@ const Movies = () => {
   return (
     <div>
       <div className="row d-flex justify-content-center">
-        {movies.map((movie, i) => <div className="col-md-2" key={i}>
+        {trendingMovies.map((movie, i) => <div className="col-md-2" key={i}>
           <div className="movie">
             <Link to={`/moviedetails/${movie.id}`}>
               <img className='w-100' src={'https://image.tmdb.org/t/p/w500' + movie.poster_path} alt={movie.title || movie.name} />
